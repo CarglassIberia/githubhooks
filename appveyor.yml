@@ -1,0 +1,31 @@
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2017
+install:  
+
+cache:
+  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+  - node_modules                    # local npm modules
+  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
+  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: .\Build.ps1
+test: off
+artifacts:
+- path: .\src\githubhooks\artifacts\**\*.nupkg
+  name: NuGet
+deploy:
+- provider: GitHub
+    auth_token:
+        secure: raxRaIBY3YcI4gM7MXFe9xHwyIU4ePqesOFQV4l97CEl0V+oOygcnByU/9p1r31d
+    release: IS4-v$(appveyor_build_version)
+    description: Identity Server 4 and Admin Console
+    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+    draft: false
+    prerelease: false
+    skip_symbols: true
+    on:
+      branch: master                 # release from master branch only
