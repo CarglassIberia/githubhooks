@@ -19,13 +19,13 @@ artifacts:
   name: NuGet
 deploy:
 - provider: GitHub
-    auth_token:
-        secure: raxRaIBY3YcI4gM7MXFe9xHwyIU4ePqesOFQV4l97CEl0V+oOygcnByU/9p1r31d
-    release: IS4-v$(appveyor_build_version)
-    description: Identity Server 4 and Admin Console
-    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
-    draft: false
-    prerelease: false
-    skip_symbols: true
-    on:
-      branch: master                 # release from master branch only
+  auth_token:
+      secure: raxRaIBY3YcI4gM7MXFe9xHwyIU4ePqesOFQV4l97CEl0V+oOygcnByU/9p1r31d
+  release: IS4-v$(appveyor_build_version)
+  description: Identity Server 4 and Admin Console
+  artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  skip_symbols: true
+  on:
+    branch: master                 # release from master branch only
