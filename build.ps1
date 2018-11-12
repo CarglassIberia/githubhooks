@@ -46,5 +46,3 @@ exec { & dotnet build githubhooks.sln -c Release --version-suffix=$buildSuffix }
 
 Pop-Location
 
-exec { & dotnet pack .\src\githubhooks\githubhooks.csproj -c Release -o .\artifacts --include-symbols --no-build $versionSuffix }
-

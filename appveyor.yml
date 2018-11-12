@@ -1,9 +1,13 @@
-version: '{build}'
+# version format
+version: 1.0.{build}
+init:
+  # Good practise, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
 pull_requests:
   do_not_increment_build_number: true
 image: Visual Studio 2017
-install:  
-
+skip_tags: true
+skip_non_tags: false
 cache:
   - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
   - node_modules                    # local npm modules
@@ -11,21 +15,28 @@ cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
 nuget:
   disable_publish_on_pr: true
+# environment variables
+environment:
+  OCTOPUS_PACKAGE_NUGET : true  
+
 build_script:
 - ps: .\Build.ps1
-test: off
+after_build:
+  - cmd: octo pack --version=%APPVEYOR_BUILD_VERSION% --id=githubhooks --basePath=./src/githubhooks/dist --outFolder=./dist
 artifacts:
-- path: .\src\githubhooks\artifacts\**\*.nupkg
-  name: NuGet
+ - path: '**\*.nupkg' # find all NuGet packages recursively
+   name: NuGet
+test: off
+
 deploy:
 - provider: GitHub
-    auth_token:
-        secure: raxRaIBY3YcI4gM7MXFe9xHwyIU4ePqesOFQV4l97CEl0V+oOygcnByU/9p1r31d
-    release: IS4-v$(appveyor_build_version)
-    description: Identity Server 4 and Admin Console
-    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
-    draft: false
-    prerelease: false
-    skip_symbols: true
-    on:
-      branch: master                 # release from master branch only
+  auth_token:
+      secure: raxRaIBY3YcI4gM7MXFe9xHwyIU4ePqesOFQV4l97CEl0V+oOygcnByU/9p1r31d
+  release: GitHubHooks-v$(appveyor_build_version)
+  description: GitHub hooks
+  artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  skip_symbols: true
+  on:
+    branch: master                 # release from master branch only
