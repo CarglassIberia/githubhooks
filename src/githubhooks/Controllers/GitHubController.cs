@@ -19,7 +19,6 @@ namespace githubhooks.Controllers
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly OctopusServerEndpoint octopusServerEndpoint;
-        private readonly HttpClientHandler handler;
 
         public GitHubController(IHttpClientFactory httpClientFactory, OctopusServerEndpoint octopusServerEndpoint)
         {
