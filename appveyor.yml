@@ -22,7 +22,7 @@ environment:
 build_script:
 - ps: .\Build.ps1
 after_build:
-  - cmd: octo pack --version=%APPVEYOR_BUILD_VERSION% --id=githubhooks --basePath=./src/githubhooks/dist --outFolder=./dist
+  - cmd: octo pack --version=%APPVEYOR_BUILD_VERSION% --id=githubhooks --basePath=./src/githubhooks/artifacts --outFolder=./artifacts
 artifacts:
  - path: '**\*.nupkg' # find all NuGet packages recursively
    name: NuGet

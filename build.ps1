@@ -35,6 +35,7 @@ echo "build: Package version suffix is $suffix"
 echo "build: Build version suffix is $buildSuffix" 
 
 exec { & dotnet build githubhooks.sln -c Release --version-suffix=$buildSuffix }
+exec { & dotnet publish .\src\githubhooks\githubhooks.csproj /p:CopyOutputSymbolsToPublishDirectory=false --no-build -o ./artifacts }
 
 #Push-Location -Path .\test\githubhooks.Tests
 
