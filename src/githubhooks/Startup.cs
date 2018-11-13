@@ -35,11 +35,11 @@ namespace githubhooks
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["Octopus:Url"]);
+                checks.AddUrlCheck(Configuration["OctoDeployServer:Url"]);
                 checks.AddUrlCheck("https://www.github.com/");
             });
 
-            services.AddScoped<OctopusServerEndpoint>(srv => new OctopusServerEndpoint(Configuration["Octopus:Url"], Configuration["Octopus:Key"]));
+            services.AddScoped<OctopusServerEndpoint>(srv => new OctopusServerEndpoint(Configuration["OctoDeployServer:Url"], Configuration["OctoDeployServer:Key"]));
 
             var policy = HttpPolicyExtensions.HandleTransientHttpError()
                              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
